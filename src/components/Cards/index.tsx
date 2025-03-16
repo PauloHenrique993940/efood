@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Card } from "../Product/styles";
 import  pizza from "../../asstes/images/pizza.png"
 import { Cad, ContainerGrid } from "./styles";

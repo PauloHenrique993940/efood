@@ -57,7 +57,7 @@ export const Cad = styled.div`
     line height: 22px;
     font-size: 14px;
     font-weigth: 400;
-    color: ${cores.blanck}
+    color: ${cores.branca};
      
    }
 
