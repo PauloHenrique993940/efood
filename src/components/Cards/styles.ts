@@ -18,16 +18,17 @@ export const ContainerGrid = styled.div`
 
 
 export const Cad = styled.div`
-   width:400px;
-   height: 420px;
+   width:320px;
+   height: auto 0;
    margin-top: 30px;
    background-color: ${cores.rosa};
    color: ${cores.branca};
    padding: 10px;
+   display: grid;
 
    img {
     width: 100%;
-    height: 180px;
+    height: 167px;
    }
 
    button {
