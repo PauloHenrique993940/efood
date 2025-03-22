@@ -10,7 +10,11 @@ export const Banner = styled.section`
   background-repeat: no-repeat;
   height: 280px; 
   position: relative;
-  
+  will-change: transform;
+  backface-visibility: hidden;
+  image-rendering: crisp-edges;
+  transform: translateZ(0); /* Ajuda a evitar flickering */
+
   &::before {
     content: '';
     position: absolute;
@@ -22,6 +26,7 @@ export const Banner = styled.section`
     z-index: 1; /* Garantir que o fundo escuro fique sobre a imagem */
   }
 `;
+
 
 export const Apresentation = styled.h1`
  font-weight: 100;

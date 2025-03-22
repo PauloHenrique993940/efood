@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Product } from "./components/Product";
 import Footer from "./components/Footer";
 import Page from "./pages/page"; // Importe o componente Page
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const rotas = createBrowserRouter([
   {
@@ -27,12 +29,16 @@ const rotas = createBrowserRouter([
 function App() {
   return (
     <>
-      <GlobalCss />
-      <RouterProvider router={rotas} />
+      <Provider store={ store }>
+        <GlobalCss />
+        <RouterProvider router={rotas} />
+      </Provider>
     </>
   );
 }
 
 export default App;
+
+
 
 

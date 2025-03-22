@@ -1,9 +1,10 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import { Cad, ContainerGrid } from "./styles";
 import Modal from "./Modal"; // Importando o componente Modal
 
 // Interface para Cardápio
-interface CardapioItem {
+export interface CardapioItem {
   foto: string;
   preco: number;
   id: number;

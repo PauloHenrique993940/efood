@@ -23,8 +23,8 @@ const ModalOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center; /* Centraliza verticalmente */
-  z-index: 999;       /* Garantir que fique por cima de tudo */
+  align-items: center;
+  z-index: 999;
 `;
 
 const ModalContent = styled.div`
@@ -38,7 +38,7 @@ const ModalContent = styled.div`
   border: 1px solid #000;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
-  gap: 24px; /* Espaço entre imagem e texto */
+  gap: 24px;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -63,7 +63,7 @@ const Image = styled.img`
   max-height: 400px;
   object-fit: cover;
   border-radius: 8px;
-
+  
   @media (max-width: 768px) {
     width: 100%;
     max-height: 250px;
@@ -74,12 +74,12 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-
+  
   h2 {
     margin-bottom: 8px;
     font-size: 20px;
   }
-
+  
   p {
     margin: 8px 0;
     line-height: 1.4;
@@ -95,8 +95,8 @@ const AddToCartButton = styled.button`
   border-radius: 8px;
   font-weight: bold;
   transition: 0.3s ease-in-out;
-  margin-top: auto; /* Joga o botão para a parte inferior do container */
-
+  margin-top: auto;
+  
   &:hover {
     background: transparent;
     color: #000;
@@ -105,24 +105,29 @@ const AddToCartButton = styled.button`
   }
 `;
 
-// ------------ Tela de Confirmação ------------
 const ConfirmationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px; /* Espaço entre imagem e texto */
+  gap: 16px;
   width: 100%;
+`;
+
+const ConfirmationImage = styled.img`
+  width: 280px;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
 `;
 
 // ------------ COMPONENTE ------------
 const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
-  // Estado para controlar se o item foi adicionado ao carrinho
   const [isAdded, setIsAdded] = useState(false);
 
   const handleAddToCart = () => {
     //Ação
-    // e então mostrar a tela de confirmação
     setIsAdded(true);
   };
 
@@ -130,23 +135,16 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>X</CloseButton>
-        
-        {/* Se o item já foi adicionado, mostra a tela de confirmação. */}
         {isAdded ? (
           <ConfirmationWrapper>
-            {/* Substitua essa imagem pela imagem que deseja exibir */}
-            <img
-              src="https://via.placeholder.com/200/09f/fff.png?text=Item+Adicionado"
-              alt="Item Adicionado"
-              style={{ borderRadius: "8px" }}
-            />
+            <ConfirmationImage src={item.foto} alt={item.nome} />
             <h2>Item adicionado ao carrinho!</h2>
           </ConfirmationWrapper>
         ) : (
           <>
             <Image src={item.foto} alt={item.nome} />
             <TextWrapper>
-              <h2>{item.nome}</h2>
+              <h2></h2>
               <p>{item.descricao}</p>
               <p>
                 <strong>Serve:</strong> {item.porcao}
@@ -154,7 +152,6 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
               <p>
                 <strong>Preço:</strong> R$ {item.preco.toFixed(2)}
               </p>
-
               <AddToCartButton onClick={handleAddToCart}>
                 Adicionar ao carrinho - R$ {item.preco.toFixed(2)}
               </AddToCartButton>
@@ -167,6 +164,9 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
 };
 
 export default Modal;
+
+
+
 
 
 
