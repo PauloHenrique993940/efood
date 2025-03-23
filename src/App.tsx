@@ -5,7 +5,7 @@ import { Product } from "./components/Product";
 import Footer from "./components/Footer";
 import Page from "./pages/page"; // Importe o componente Page
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "./components/store";
 
 const rotas = createBrowserRouter([
   {
@@ -38,6 +38,25 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

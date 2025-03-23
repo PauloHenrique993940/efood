@@ -1,12 +1,14 @@
+// src/pages/Page.tsx
 import React from 'react';
-import * as S from '../pages/page.styles'; // Certifique-se de que o caminho esteja correto
-import logoImage from '../asstes/images/logo.png'; // Importe a imagem
+import * as S from '../pages/page.styles'; 
+import logoImage from '../asstes/images/logo.png'; 
 import { A, HeaderLinks, Img, Li, Nav, Span, Ul } from '../pages/page.styles';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Importe o Link
 import { cores } from '../styles';
 import Footer from '../components/Footer';
 import Hero from '../components/Banner';
 import CardapioGrid from '../components/Cards';
+import Cart from '../components/Cart';
 
 const Page: React.FC = () => {
     return (
@@ -22,7 +24,7 @@ const Page: React.FC = () => {
                                 <Img src={logoImage} alt="Logo" />
                             </Li>
                             <Li>
-                                <Span>0 produto(s) no carrinho</Span>
+                                <Span>Ver carrinho</Span> {/* Link para a página do carrinho */}
                             </Li>
                         </Ul>
                     </Nav>
@@ -30,7 +32,7 @@ const Page: React.FC = () => {
                 {/* Adicione aqui o conteúdo da sua página */}
             </S.Container>
             <Hero />
-            <section className='container'>
+            <section className="container">
                 <CardapioGrid />
             </section>
             <Footer />
@@ -39,3 +41,9 @@ const Page: React.FC = () => {
 };
 
 export default Page;
+
+
+
+
+
+

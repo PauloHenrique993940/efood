@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Button from "../Button";
 import { Card, TagContainer, TagButton, Image, TitleContainer, Description, Rating, Titulo } from "./styles";
 import start from '../../asstes/images/star.svg';
+import Cart from "../Cart";
 
 // Definindo o tipo para os dados da API
-interface Restaurant {
+export interface Restaurant {
+  length: number;
   id: number;
   titulo: string;
   destacado: boolean;

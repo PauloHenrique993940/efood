@@ -31,11 +31,10 @@ const ModalContent = styled.div`
   background: ${cores.rosa};
   color: ${cores.branca};
   padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 800px;
+  width: 100%;
+  max-width: 850px;
+  height: 344px;
   position: relative;
-  border: 1px solid #000;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   gap: 24px;
@@ -62,7 +61,6 @@ const Image = styled.img`
   height: auto;
   max-height: 400px;
   object-fit: cover;
-  border-radius: 8px;
   
   @media (max-width: 768px) {
     width: 100%;
@@ -73,16 +71,19 @@ const Image = styled.img`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   
   h2 {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
     font-size: 20px;
   }
   
   p {
-    margin: 8px 0;
-    line-height: 1.4;
+    margin-top: 10px;
+    line-height: 22px;
+    width: 500px;
+    height: 176px;
+    font-weight: 400;
+    font-size: 14px;
   }
 `;
 
@@ -92,15 +93,15 @@ const AddToCartButton = styled.button`
   border: none;
   padding: 12px 16px;
   cursor: pointer;
-  border-radius: 8px;
   font-weight: bold;
   transition: 0.3s ease-in-out;
   margin-top: auto;
+  width: 300px;
+  heigth: 24px:
   
   &:hover {
     background: transparent;
-    color: #000;
-    border: 2px solid ${cores.branca};
+    color: ${cores.branca};
     transform: scale(1.05);
   }
 `;
@@ -109,7 +110,7 @@ const ConfirmationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 16px;
   width: 100%;
 `;
@@ -119,7 +120,6 @@ const ConfirmationImage = styled.img`
   height: auto;
   max-height: 400px;
   object-fit: cover;
-  border-radius: 8px;
 `;
 
 // ------------ COMPONENTE ------------
@@ -144,9 +144,9 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
           <>
             <Image src={item.foto} alt={item.nome} />
             <TextWrapper>
-              <h2></h2>
+              <h2>{item.nome}</h2>
               <p>{item.descricao}</p>
-              <p>
+              <p className="P-Botton">
                 <strong>Serve:</strong> {item.porcao}
               </p>
               <p>
