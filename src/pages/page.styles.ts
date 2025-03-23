@@ -34,10 +34,14 @@ export const Ul = styled.ul`
   justify-content: space-between;
   align-items: center;
   gap: 0px; /* Espaçamento entre os itens */
+  font-weight: 900;
+  font-size: 18px;
 `;
 
 export const Li = styled.li`
   color: ${cores.rosa};
+  font-weight: 900;
+  font-size: 18px;
 `;
 
 export const Img = styled.img`
