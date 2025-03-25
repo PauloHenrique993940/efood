@@ -25,12 +25,12 @@ export const Cad = styled.div`
    padding: 10px;
    display: grid;
 
-   img {
+  img {
     width: 100%;
     height: 167px;
-   }
+  }
 
-   button {
+  button {
     width: 100%;
     color: ${cores.rosa};
     padding: 4px;
@@ -43,21 +43,21 @@ export const Cad = styled.div`
       color: ${cores.blanck};
       border: 1px solid ${cores.blanck};
     }
-   }
+  }
    
-   h2 {
+  h2 {
     font-weight: 900;
     font-size: 16px;
     margin-top: 5px;
-   }
+  }
 
-   p {
+  p {
     width: 304px;
     margin-top: 5px;
     line-height: 22px;
     font-size: 14px;
     font-weight: 400;
     color: ${cores.branca};
-   }
+  }
 `;
 

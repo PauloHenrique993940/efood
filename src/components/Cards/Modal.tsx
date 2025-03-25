@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { cores } from "../../styles";
+import { breakpoints, cores } from "../../styles";
 
 interface ModalProps {
   item: {
@@ -14,6 +14,7 @@ interface ModalProps {
 }
 
 // ------------ ESTILOS ------------
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -24,7 +25,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1;
 `;
 
 const ModalContent = styled.div`
@@ -38,10 +39,20 @@ const ModalContent = styled.div`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   gap: 24px;
-  
-  @media (max-width: 768px) {
+  flex-wrap: wrap;
+
+  @media (max-width: ${breakpoints.tablet}) {
     flex-direction: column;
+    max-width: 90%;
+    height: auto;  // Allowing the height to adjust dynamically
+    padding: 16px;
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
     max-width: 95%;
+    padding: 12px;
+    gap: 12px;
   }
 `;
 
@@ -61,7 +72,7 @@ const Image = styled.img`
   height: auto;
   max-height: 400px;
   object-fit: cover;
-  
+
   @media (max-width: 768px) {
     width: 100%;
     max-height: 250px;
@@ -71,19 +82,22 @@ const Image = styled.img`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   h2 {
     margin-bottom: 0px;
     font-size: 20px;
   }
-  
+
   p {
     margin-top: 10px;
     line-height: 22px;
-    width: 500px;
-    height: 176px;
+    width: 100%;  // Adjusting width to be more flexible
     font-weight: 400;
     font-size: 14px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;  // Slightly bigger font size for readability on mobile
+    }
   }
 `;
 
@@ -96,13 +110,19 @@ const AddToCartButton = styled.button`
   font-weight: bold;
   transition: 0.3s ease-in-out;
   margin-top: auto;
-  width: 300px;
-  heigth: 24px:
-  
+  width: 100%;
+  max-width: 300px;
+
   &:hover {
     background: transparent;
     color: ${cores.branca};
     transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;  // Full width button on smaller screens
+    max-width: 100%;
+    padding: 10px 12px;  // Adjust padding for mobile
   }
 `;
 
@@ -121,6 +141,8 @@ const ConfirmationImage = styled.img`
   max-height: 400px;
   object-fit: cover;
 `;
+
+
 
 // ------------ COMPONENTE ------------
 const Modal: React.FC<ModalProps> = ({ item, onClose }) => {

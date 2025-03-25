@@ -25,7 +25,7 @@ const Page: React.FC = () => {
               </Li>
               <Li>
                 <Span onClick={() => dispatch(openCart())} style={{ cursor: "pointer" }}>
-                  🛒 Ver Carrinho
+                  Ver Carrinho
                 </Span>
               </Li>
             </Ul>

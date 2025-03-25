@@ -5,6 +5,11 @@ export const cores = {
     rosaClaro: '#FFEBD9',
     blanck: '#FFEBD9',
 }
+
+export const breakpoints =  {
+   tablet: '768px',
+   desktop: '1024px'
+}
 export const GlobalCss = createGlobalStyle`
    * {
       margin:0;
@@ -27,15 +32,19 @@ export const GlobalCss = createGlobalStyle`
       margin-bottom: 100px;
       grid-gap: 60px;
 
-   }
-   @media (max-width: 768px) {
-      .container {
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
+      @media (max-width: ${breakpoints.tablet}) {
+        grid-template-columns: 1fr;
+        justify-content: center;
+        text-align: center;
+        padding: 10em;
+
       }
    }
+
+
+
+   }
+   
    
    
    

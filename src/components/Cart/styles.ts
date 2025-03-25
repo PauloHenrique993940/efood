@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cores } from "../../styles";
+import { breakpoints, cores } from "../../styles";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -13,12 +13,19 @@ export const Overlay = styled.div`
 `;
 
 export const CartContainer = styled.div`
-  width: 320px;
+  width: 360px;
   height: 100vh;
   background: ${cores.rosa};
   padding: 30px 10px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: ${breakpoints.tablet}){
+    display: flex;
+    padding: 10px;
+    width: 45%;
+  
+  }
 
   &.is-open {
     display: flex;
@@ -40,7 +47,11 @@ export const CartContainer = styled.div`
     align-items: center; /* Centraliza o ícone ou texto dentro do botão */
     cursor: pointer;
     transition: all 0.3s ease; /* Transição suave */
-    border-color: ${cores.branca}
+    border-color: ${cores.branca};
+
+    @media(max-width: ${breakpoints.tablet}){
+      align-self:flex-start;
+    }
   }
 
   .btnFechar:hover {
@@ -61,6 +72,11 @@ export const Sidebar = styled.div`
 `;
 
 export const CarrinhoContainer = styled.div`
+  @media(max-width: ${breakpoints.tablet}){
+    display:  flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `;
 
 export const CarriinhoText = styled.h2`
@@ -102,6 +118,8 @@ export const CartItemRemoveButton = styled.button`
   border: none;
   cursor: pointer;
   margin-top: 40px;
+
+  
 `;
 
 export const CartTotal = styled.div`
@@ -110,6 +128,17 @@ export const CartTotal = styled.div`
   margin-top: 40px;
   background: transparent;
   border-radius: 8px;
+
+   @media (max-width: ${breakpoints.tablet}) {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    background: transparent;
+    border-radius: 8px;
+    width: 80%; 
+    flex-direction: column; 
+    align-items: left; // Center-align the content
+  }
 `;
 
 export const CartTotalLabel = styled.span`
@@ -132,5 +161,8 @@ export const CheckoutButton = styled.button`
   cursor: pointer;
   margin-top: 12px;
   border-color: 1px ${cores.branca};
+  @media(max-width: ${breakpoints.tablet}){
+    width: 75%;
+  }
 `;
 

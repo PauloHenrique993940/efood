@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Fundo from "../asstes/images/Fundo.png";
-import { cores } from '../styles';
+import { breakpoints, cores } from '../styles';
 import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
@@ -9,6 +9,16 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   color: ${cores.rosa};
+
+  @media (max-width: ${breakpoints.tablet}) {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 5em;
+  }
+
+}
+
 `;
 
 export const HeaderLinks = styled.div`

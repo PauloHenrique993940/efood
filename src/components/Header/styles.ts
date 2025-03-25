@@ -1,17 +1,29 @@
 import styled, {createGlobalStyle} from "styled-components";
-import { cores } from "../../styles";
+import { breakpoints, cores } from "../../styles";
 import Vector from '../../asstes/images/Vector.png'; 
 
 
 export const HeaderBar = styled.header`
   height: 384px;
   width: 100%;
-  color: black;
   background-image: url(${Vector});
+  background-size: cover;
+  background-position: center;
   color: ${cores.rosa};
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px 20px;
+
+  @media (max-width:  ${breakpoints.tablet}) {
+    HeaderBar{
+      display: block;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: auto;
+    }
+  }
 `;
+
 export const ContainerLogo = styled.img`
   display: flex; 
   margin-left: auto;
@@ -30,7 +42,11 @@ export const TituloTexto = styled.h1`
   margin: 0 auto;
   font-weight: 900;
   padding-top: 150px;
-  font-size: 36px;
+  font-size: 32px;
+
+
+  @media(max-width: ${breakpoints.tablet}){
+  }
 
 `
 
