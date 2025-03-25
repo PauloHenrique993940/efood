@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store"; // Estado global do Redux
-import { closeCart, removeItem } from "../../store/reducers/cart"; // Importando ações
+import { RootState } from "../../store";
+import { closeCart, removeItem } from "../../store/reducers/cart";
 
 import { 
   Overlay, CartContainer, Sidebar, CarrinhoContainer, CarriinhoText, 
@@ -10,50 +10,63 @@ import {
 } from './styles';
 
 import lixeira from "../../asstes/carrinho/lixeira.png";
+import DeliveryForm from "./DeliveryForm"; // Importe DeliveryForm
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const [showDeliveryForm, setShowDeliveryForm] = useState(false); // Estado para controlar a exibição de DeliveryForm
   const isOpen = useSelector((state: RootState) => state.cart.isOpen);
   const items = useSelector((state: RootState) => state.cart.items);
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  // Função para remover item do carrinho
   const handleRemoveFromCart = (id: number) => {
-    dispatch(removeItem(id)); // Dispara a ação de remoção
+    dispatch(removeItem(id));
   };
 
-  if (!isOpen) return null; // 🔹 Exibe apenas se o carrinho estiver aberto
+  const handleCheckout = () => {
+    setShowDeliveryForm(true); // Exibe DeliveryForm
+  };
+
+  const handleCancelDelivery = () => {
+    setShowDeliveryForm(false); // Oculta DeliveryForm
+  };
+
+  if (!isOpen) return null;
 
   return (
     <Overlay>
       <CartContainer>
         <button className="btnFechar" onClick={() => dispatch(closeCart())}>X</button>
-        <Sidebar>
-          <CarrinhoContainer>
-            {items.map((item) => (
-              <CartItem key={item.id}>
-                <CartItemImage src={item.image} alt={item.name} />
-                <CartItemInfo>
-                  <CartItemName>{item.name}</CartItemName>
-                  <CartItemPrice>R$ {item.price.toFixed(2)}</CartItemPrice>
-                </CartItemInfo>
-                <CartItemRemoveButton>
-                  <img 
-                    onClick={() => handleRemoveFromCart(item.id)} // Chama a função de remoção
-                    src={lixeira} 
-                    alt="Remover" 
-                  />
-                </CartItemRemoveButton>
-              </CartItem>
-            ))}
-          </CarrinhoContainer>
-          <CartTotal>
-            <CartTotalLabel>Valor total:</CartTotalLabel>
-            <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
-          </CartTotal>
-          <CheckoutButton>Continuar com a entrega</CheckoutButton>
-        </Sidebar>
+        {showDeliveryForm ? (
+          <DeliveryForm onCancel={handleCancelDelivery} /> // Renderiza DeliveryForm se showDeliveryForm for true
+        ) : (
+          <Sidebar>
+            <CarrinhoContainer>
+              {items.map((item) => (
+                <CartItem key={item.id}>
+                  <CartItemImage src={item.image} alt={item.name} />
+                  <CartItemInfo>
+                    <CartItemName>{item.name}</CartItemName>
+                    <CartItemPrice>R$ {item.price.toFixed(2)}</CartItemPrice>
+                  </CartItemInfo>
+                  <CartItemRemoveButton>
+                    <img 
+                      onClick={() => handleRemoveFromCart(item.id)}
+                      src={lixeira} 
+                      alt="Remover" 
+                    />
+                  </CartItemRemoveButton>
+                </CartItem>
+              ))}
+            </CarrinhoContainer>
+            <CartTotal>
+              <CartTotalLabel>Valor total:</CartTotalLabel>
+              <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
+            </CartTotal>
+            <CheckoutButton onClick={handleCheckout}>Continuar com a entrega</CheckoutButton>
+          </Sidebar>
+        )}
       </CartContainer>
     </Overlay>
   );

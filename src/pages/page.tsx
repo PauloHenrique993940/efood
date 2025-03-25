@@ -10,6 +10,7 @@ import CardapioGrid from "../components/Cards";
 import Cart from "../components/Cart";
 import { useDispatch } from "react-redux";
 import { openCart } from "../store/reducers/cart"; // Importando a ação para abrir o carrinho
+import DeliveryPage from "./DeliveryPage";
 const Page: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -37,8 +38,9 @@ const Page: React.FC = () => {
         <CardapioGrid />
       </section>
       <Footer />
-      <Cart />  {/* O carrinho só aparecerá quando aberto */}
+      {/* O carrinho só aparecerá quando aberto */}
       <S.Container />
+      <Cart />
     </>
   );
 };

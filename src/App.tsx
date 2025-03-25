@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import Page from "./pages/page"; // Importe o componente Page
 import { Provider } from "react-redux";
 import { store } from "./store";
+import DeliveryPage from "./pages/DeliveryPage"; // Caminho correto para o DeliveryPage
+
 
 
 const rotas = createBrowserRouter([
@@ -23,8 +25,9 @@ const rotas = createBrowserRouter([
   },
   {
     path: '/page', // Adicione a rota para o componente Page
+    // eslint-disable-next-line react/react-in-jsx-scope
     element: <Page />
-  }
+  },
 ]);
 
 function App() {

@@ -1,8 +1,8 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addItem, openCart } from "../../store/reducers/cart"; // Importando ações do Redux
 import { Cad, ContainerGrid } from "./styles";
-import Modal from "./Modal";
 
 export interface CardapioItem {
   foto: string;
@@ -65,6 +65,7 @@ const Cardapio: React.FC = () => {
         <div>Nenhum item disponível no cardápio.</div>
       )}
     </ContainerGrid>
+    
   );
 };
 
