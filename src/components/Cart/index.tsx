@@ -49,7 +49,7 @@ const Cart = () => {
             ))}
           </CarrinhoContainer>
           <CartTotal>
-            <CartTotalLabel>Valor total</CartTotalLabel>
+            <CartTotalLabel>Valor total:</CartTotalLabel>
             <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
           </CartTotal>
           <CheckoutButton>Continuar com a entrega</CheckoutButton>
