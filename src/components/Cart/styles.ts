@@ -72,10 +72,15 @@ export const Sidebar = styled.div`
 `;
 
 export const CarrinhoContainer = styled.div`
+  width: 100%;
+  padding: 0;
   @media(max-width: ${breakpoints.tablet}){
     display:  flex;
     width: 100%;
+    paddind: 10px;
+    flex-direction: columns;
     flex-wrap: wrap;
+    margin-top: 50px;
   }
 `;
 
