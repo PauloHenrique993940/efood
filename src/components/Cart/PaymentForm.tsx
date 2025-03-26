@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ButtaoVoltarAoEndereco, ButtonFinanlizar, CartaoInfosPagment, CartLabel, ConatinerFomsBtn, InputContainer, InputCvv, InputMonth, InputNumber, InputYear, PaymentContainer } from "./paymento";
 
 interface PaymentFormProps {
   onCancel: () => void;
@@ -12,69 +13,80 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel }) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados de pagamento
     console.log({ cardNumber, cvv, expiryMonth, expiryYear });
-    // Depois de enviar os dados, você pode finalizar o pagamento
   };
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f0f0f0", borderRadius: "8px" }}>
+    <PaymentContainer>
       <h2>Pagamento - Valor a pagar R$ 190,90</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="cardNumber">Número do cartão:</label>
-          <input
-            type="text"
-            id="cardNumber"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
-            required
-          />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="cvv">CVV:</label>
-          <input
-            type="text"
-            id="cvv"
-            value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
-            required
-          />
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+        <InputContainer>
           <div>
-            <label htmlFor="expiryMonth">Mês de vencimento:</label>
-            <input
+            <div>
+              <CartLabel >Nome  do cartão:</CartLabel>
+              <input
+               type="text"
+               id="cardName"
+               value={cardNumber}
+               onChange={(e) => setCardNumber(e.target.value)}
+               required
+              />
+            </div>
+            <CartaoInfosPagment>
+              <div>
+                <CartLabel >Numero  do cartão:</CartLabel>
+                <InputNumber
+                  id="cardNumber"
+                  value={cardNumber}
+                  onChange={(value) => setCardNumber(value?.toString() || "")}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="cvv">CVV:</label>
+                <InputCvv
+                  type="text"
+                  id="cvv"
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value)}
+                  required
+                />
+              </div>
+            </CartaoInfosPagment>
+          </div>
+      
+        </InputContainer>
+        <CartaoInfosPagment>
+          <div>
+            <CartLabel htmlFor="expiryMonth">Mês de vencimento:</ CartLabel>
+            <InputMonth
               type="text"
               id="expiryMonth"
               value={expiryMonth}
               onChange={(e) => setExpiryMonth(e.target.value)}
-              style={{ width: "100px", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
               required
             />
           </div>
           <div>
-            <label htmlFor="expiryYear">Ano de vencimento:</label>
-            <input
+            <CartLabel htmlFor="expiryYear">Ano de vencimento:</CartLabel>
+            <InputYear
               type="text"
               id="expiryYear"
               value={expiryYear}
               onChange={(e) => setExpiryYear(e.target.value)}
-              style={{ width: "100px", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
               required
             />
           </div>
-        </div>
-        <button type="submit" style={{ width: "100%", padding: "10px", backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-          Finalizar pagamento
-        </button>
-        <button type="button" onClick={onCancel} style={{ width: "100%", padding: "10px", backgroundColor: "#f44336", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", marginTop: "10px" }}>
-          Voltar para a edição de endereço
-        </button>
+        </CartaoInfosPagment>
+        <ConatinerFomsBtn>
+          <ButtonFinanlizar type="submit">
+            Finalizar pagamento
+          </ButtonFinanlizar>
+          <ButtaoVoltarAoEndereco type="button" onClick={onCancel}>
+            Voltar para a edição de endereço
+          </ButtaoVoltarAoEndereco>
+        </ConatinerFomsBtn>
       </form>
-    </div>
+    </PaymentContainer>
   );
 };
 

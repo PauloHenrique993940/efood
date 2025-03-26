@@ -1,7 +1,17 @@
-// DeliveryForm.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ButaoVoltar, ButtonContinuar, CartForms, FormGroup, FormGroupFlex, FormInput, Input, Label, LabelComplemento } from "./stylesForms";
+import PaymentForm from "./PaymentForm"; // Importando o componente correto
+import { 
+    ButaoVoltar, 
+    ButtonContinuar, 
+    CartForms, 
+    FormGroup, 
+    FormGroupFlex, 
+    FormInput, 
+    Input, 
+    Label, 
+    LabelComplemento 
+} from "./stylesForms";
 import Button from "../Button";
 
 interface DeliveryFormProps {
@@ -15,8 +25,17 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel }) => {
     const [cep, setCep] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
+    const [showPaymentForm, setShowPaymentForm] = useState(false); 
     const navigate = useNavigate();
 
+    const handlePaymentForm = () => {
+        setShowPaymentForm(true);
+    };
+
+    // Se showPaymentForm for true, renderiza o PaymentForm
+    if (showPaymentForm) {
+        return <PaymentForm onCancel={() => setShowPaymentForm(false)} />;
+    }
 
     return (
         <CartForms>
@@ -63,7 +82,7 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel }) => {
                     />
                 </div>
                 <div>
-                   <Label htmlFor="number">Número:</ Label>
+                   <Label htmlFor="number">Número:</Label>
                    <Input
                       type="text"
                       id="number"
@@ -82,13 +101,19 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel }) => {
                     onChange={(e) => setComplement(e.target.value)}
                 />
             </FormGroup>
-            <ButtonContinuar type="submit">Continuar com o pagamento</ ButtonContinuar>
-            <ButaoVoltar type="button" onClick={onCancel}>Voltar para o carrinho</ButaoVoltar>
+            <ButtonContinuar type="button" onClick={handlePaymentForm}>
+                Continuar com o pagamento
+            </ButtonContinuar>
+            <ButaoVoltar type="button" onClick={onCancel}>
+                Voltar para o carrinho
+            </ButaoVoltar>
         </CartForms>
     );
 };
 
 export default DeliveryForm;
+
+
 
 
 

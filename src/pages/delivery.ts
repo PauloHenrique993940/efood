@@ -5,7 +5,7 @@ export const Container = styled.div`
   margin: 50px auto;
   padding: 20px;
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
@@ -38,6 +38,6 @@ export const Button = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: #218838;
+    background-color: black;
   }
 `;

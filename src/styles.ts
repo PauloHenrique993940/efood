@@ -5,6 +5,7 @@ export const cores = {
     rosa: '#E66767',
     rosaClaro: '#FFEBD9',
     blanck: '#FFEBD9',
+    cortextForms: '#4B4B4B'
 }
 
 export const breakpoints =  {
