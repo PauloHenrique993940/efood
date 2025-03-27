@@ -4,7 +4,7 @@ import { cores } from "../../styles";
 export const  CartForms = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 4px;
   width: 100%;
 
 
@@ -12,7 +12,7 @@ export const  CartForms = styled.div`
    font-size: 16px;
    width: 56px;
    font-weigth: 700;
-   margin-bottom: 30px;
+   margin-bottom: 5px;
   
  
  }

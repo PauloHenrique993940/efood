@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Botao, Container, Texto, Titulo} from "./stylesConf"
+import { Botao, Container, Texto, Titulo } from "./stylesConf";
+
+interface OrderData {
+  trackingCode: string;
+  deliveryDate: string;
+}
 
 interface ConfirmacaoProps {
   orderId: string;
@@ -8,27 +13,71 @@ interface ConfirmacaoProps {
 }
 
 const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose }) => {
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("https://fake-api-tau.vercel.app/api/efood/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products: [{ id: 1, price: 0 }],
+        delivery: {
+          receiver: "Nome do destinatário",
+          address: {
+            description: "Endereço completo",
+            city: "Cidade",
+            zipCode: "00000-000",
+            number: 123,
+            complement: "Apto 101",
+          },
+        },
+        payment: {
+          card: {
+            name: "Nome no cartão",
+            number: "0000 0000 0000 0000",
+            code: 123,
+            expires: {
+              month: 12,
+              year: 2030,
+            },
+          },
+        },
+      }),
+    })
+      .then((response) => response.json())
+      .then((data: OrderData) => {
+        setOrderData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [orderId]);
+
+  if (loading) return <Texto>Carregando...</Texto>;
+  if (error) return <Texto>Erro ao carregar os dados: {error}</Texto>;
+
   return (
     <Container>
       <Titulo>PEDIDO REALIZADO - ({orderId})</Titulo>
+      <Texto>Seu pedido está sendo preparado para envio.</Texto>
+      <Texto>Código de rastreamento: {orderData?.trackingCode}</Texto>
+      <Texto>Data estimada de entrega: {orderData?.deliveryDate}</Texto>
       <Texto>
-        Estamos felizes em informar que seu pedido já está sendo preparado para envio. Você receberá um email com o código de rastreamento e informações de entrega fornecidas.
-      </Texto>
-      <Texto>
-        Lembramos de consultar quais nossos entregadores estão autorizados a realizar cobranças extras.
-      </Texto>
-      <Texto>
-        Lembre-se da importância de registrar os dados após recebimento do pedido, para quando acabar seus produtos, ir até uma unidade e realizar a retenção.
-      </Texto>
-      <Texto>
-        Esperamos que desfrute da sua Seleciona e agradecemos a preferência gastronômica. Bom apetite!
+        Lembre-se da importância de registrar os dados após o recebimento do pedido.
       </Texto>
       <Botao onClick={onClose}>Concluir</Botao>
     </Container>
   );
 };
 
-export default Confirmacao; // Exportação padrão corrigida
+export default Confirmacao;
+
 
 
 

@@ -16,7 +16,7 @@ export const CartContainer = styled.div`
   width: 360px;
   height: 100vh;
   background: ${cores.rosa};
-  padding: 30px 10px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
 
