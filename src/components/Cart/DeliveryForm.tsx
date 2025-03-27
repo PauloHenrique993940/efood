@@ -1,40 +1,42 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PaymentForm from "./PaymentForm"; // Importando o componente correto
-import { 
-    ButaoVoltar, 
-    ButtonContinuar, 
-    CartForms, 
-    FormGroup, 
-    FormGroupFlex, 
-    FormInput, 
-    Input, 
-    Label, 
-    LabelComplemento 
+import PaymentForm from "./PaymentForm";
+import {
+    ButaoVoltar,
+    ButtonContinuar,
+    CartForms,
+    FormGroup,
+    FormGroupFlex,
+    FormInput,
+    Input,
+    Label,
+    LabelComplemento
 } from "./stylesForms";
 import Button from "../Button";
 
 interface DeliveryFormProps {
     onCancel: () => void;
+    onDeliverySuccess: () => void; // Adicionando a prop onDeliverySuccess
 }
 
-const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel }) => {
+const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel, onDeliverySuccess }) => {
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
-    const [showPaymentForm, setShowPaymentForm] = useState(false); 
+    const [showPaymentForm, setShowPaymentForm] = useState(false);
     const navigate = useNavigate();
 
     const handlePaymentForm = () => {
+        onDeliverySuccess(); // Chame onDeliverySuccess aqui
         setShowPaymentForm(true);
     };
 
     // Se showPaymentForm for true, renderiza o PaymentForm
     if (showPaymentForm) {
-        return <PaymentForm onCancel={() => setShowPaymentForm(false)} />;
+        return <PaymentForm onCancel={() => setShowPaymentForm(false)} onPaymentSuccess={() => {}} />;
     }
 
     return (
@@ -72,23 +74,23 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel }) => {
             </FormGroup>
             <FormGroupFlex>
                 <div>
-                   <Label htmlFor="cep">CEP:</Label>
-                   <Input
-                       type="text"
-                       id="cep"
-                       value={cep}
-                       onChange={(e) => setCep(e.target.value)}
-                       required
+                    <Label htmlFor="cep">CEP:</Label>
+                    <Input
+                        type="text"
+                        id="cep"
+                        value={cep}
+                        onChange={(e) => setCep(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
-                   <Label htmlFor="number">Número:</Label>
-                   <Input
-                      type="text"
-                      id="number"
-                      value={number}
-                      onChange={(e) => setNumber(e.target.value)}
-                      required
+                    <Label htmlFor="number">Número:</Label>
+                    <Input
+                        type="text"
+                        id="number"
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
+                        required
                     />
                 </div>
             </FormGroupFlex>

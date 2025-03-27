@@ -3,9 +3,10 @@ import { ButtaoVoltarAoEndereco, ButtonFinanlizar, CartaoInfosPagment, CartLabel
 
 interface PaymentFormProps {
   onCancel: () => void;
+  onPaymentSuccess: () => void; // Adicione esta linha
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel, onPaymentSuccess }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expiryMonth, setExpiryMonth] = useState("");
@@ -14,6 +15,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log({ cardNumber, cvv, expiryMonth, expiryYear });
+    // Aqui você faria a lógica real de pagamento (ex: chamada de API)
+    // Se o pagamento for bem-sucedido, chame onPaymentSuccess
+    onPaymentSuccess();
   };
 
   return (
@@ -23,18 +27,18 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel }) => {
         <InputContainer>
           <div>
             <div>
-              <CartLabel >Nome  do cartão:</CartLabel>
+              <CartLabel>Nome do cartão:</CartLabel>
               <input
-               type="text"
-               id="cardName"
-               value={cardNumber}
-               onChange={(e) => setCardNumber(e.target.value)}
-               required
+                type="text"
+                id="cardName"
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+                required
               />
             </div>
             <CartaoInfosPagment>
               <div>
-                <CartLabel >Numero  do cartão:</CartLabel>
+                <CartLabel>Numero do cartão:</CartLabel>
                 <InputNumber
                   id="cardNumber"
                   value={cardNumber}
@@ -53,11 +57,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel }) => {
               </div>
             </CartaoInfosPagment>
           </div>
-      
         </InputContainer>
         <CartaoInfosPagment>
           <div>
-            <CartLabel htmlFor="expiryMonth">Mês de vencimento:</ CartLabel>
+            <CartLabel htmlFor="expiryMonth">Mês de vencimento:</CartLabel>
             <InputMonth
               type="text"
               id="expiryMonth"

@@ -1,75 +1,106 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import lixeira from "../../asstes/carrinho/lixeira.png";
+import DeliveryForm from "./DeliveryForm";
+import PaymentForm from "./PaymentForm";
+import Confirmacao from "./confirm/Confirmacao"; // Importação corrigida
 import { RootState } from "../../store";
 import { closeCart, removeItem } from "../../store/reducers/cart";
 
+// ... (restante do código) ...
+
 import { 
-  Overlay, CartContainer, Sidebar, CarrinhoContainer, CarriinhoText, 
-  CartItem, CartItemImage, CartItemInfo, CartItemName, CartItemPrice, 
-  CartItemRemoveButton, CartTotal, CartTotalLabel, CartTotalValue, CheckoutButton 
+    Overlay, CartContainer, Sidebar, CarrinhoContainer, CarriinhoText, 
+    CartItem, CartItemImage, CartItemInfo, CartItemName, CartItemPrice, 
+    CartItemRemoveButton, CartTotal, CartTotalLabel, CartTotalValue, CheckoutButton 
 } from './styles';
 
-import lixeira from "../../asstes/carrinho/lixeira.png";
-import DeliveryForm from "./DeliveryForm"; // Importe DeliveryForm
-
 const Cart = () => {
-  const dispatch = useDispatch();
-  const [showDeliveryForm, setShowDeliveryForm] = useState(false); // Estado para controlar a exibição de DeliveryForm
-  const isOpen = useSelector((state: RootState) => state.cart.isOpen);
-  const items = useSelector((state: RootState) => state.cart.items);
+    const dispatch = useDispatch();
+    const [showDeliveryForm, setShowDeliveryForm] = useState(false);
+    const [showPaymentForm, setShowPaymentForm] = useState(false);
+    const [showConfirmacao, setShowConfirmacao] = useState(false);
+    const [orderId, setOrderId] = useState("ORDER_12345"); // Adicione um estado para orderId
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const isOpen = useSelector((state: RootState) => state.cart.isOpen);
+    const items = useSelector((state: RootState) => state.cart.items);
 
-  const handleRemoveFromCart = (id: number) => {
-    dispatch(removeItem(id));
-  };
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
-    setShowDeliveryForm(true); // Exibe DeliveryForm
-  };
+    const handleRemoveFromCart = (id: number) => {
+        dispatch(removeItem(id));
+    };
 
-  const handleCancelDelivery = () => {
-    setShowDeliveryForm(false); // Oculta DeliveryForm
-  };
+    const handleCheckout = () => {
+        setShowDeliveryForm(true);
+    };
 
-  if (!isOpen) return null;
+    const handleCancelDelivery = () => {
+        setShowDeliveryForm(false);
+    };
 
-  return (
-    <Overlay>
-      <CartContainer>
-        <button className="btnFechar" onClick={() => dispatch(closeCart())}>X</button>
-        {showDeliveryForm ? (
-          <DeliveryForm onCancel={handleCancelDelivery} /> // Renderiza DeliveryForm se showDeliveryForm for true
-        ) : (
-          <Sidebar>
-            <CarrinhoContainer>
-              {items.map((item) => (
-                <CartItem key={item.id}>
-                  <CartItemImage src={item.image} alt={item.name} />
-                  <CartItemInfo>
-                    <CartItemName>{item.name}</CartItemName>
-                    <CartItemPrice>R$ {item.price.toFixed(2)}</CartItemPrice>
-                  </CartItemInfo>
-                  <CartItemRemoveButton>
-                    <img 
-                      onClick={() => handleRemoveFromCart(item.id)}
-                      src={lixeira} 
-                      alt="Remover" 
-                    />
-                  </CartItemRemoveButton>
-                </CartItem>
-              ))}
-            </CarrinhoContainer>
-            <CartTotal>
-              <CartTotalLabel>Valor total:</CartTotalLabel>
-              <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
-            </CartTotal>
-            <CheckoutButton onClick={handleCheckout}>Continuar com a entrega</CheckoutButton>
-          </Sidebar>
-        )}
-      </CartContainer>
-    </Overlay>
-  );
+    const handleDeliverySuccess = () => {
+        setShowDeliveryForm(false);
+        setShowPaymentForm(true);
+    };
+
+    const handlePaymentSuccess = () => {
+        setShowPaymentForm(false);
+        setShowConfirmacao(true);
+    };
+
+    const handlePaymentCancel = () => {
+        setShowPaymentForm(false);
+    };
+
+    const handleConfirmacaoClose = () => {
+        setShowConfirmacao(false);
+        setShowDeliveryForm(false);
+        setShowPaymentForm(false);
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <Overlay>
+            <CartContainer>
+                <button className="btnFechar" onClick={() => dispatch(closeCart())}>X</button>
+                {showConfirmacao ? (
+                    <Confirmacao onClose={handleConfirmacaoClose} orderId={orderId} /> // Adicione orderId aqui
+                ) : showPaymentForm ? (
+                    <PaymentForm onPaymentSuccess={handlePaymentSuccess} onCancel={handlePaymentCancel} />
+                ) : showDeliveryForm ? (
+                    <DeliveryForm onCancel={handleCancelDelivery} onDeliverySuccess={handleDeliverySuccess} />
+                ) : (
+                    <Sidebar>
+                        <CarrinhoContainer>
+                            {items.map((item) => (
+                                <CartItem key={item.id}>
+                                    <CartItemImage src={item.image} alt={item.name} />
+                                    <CartItemInfo>
+                                        <CartItemName>{item.name}</CartItemName>
+                                        <CartItemPrice>R$ {item.price.toFixed(2)}</CartItemPrice>
+                                    </CartItemInfo>
+                                    <CartItemRemoveButton>
+                                        <img 
+                                            onClick={() => handleRemoveFromCart(item.id)}
+                                            src={lixeira} 
+                                            alt="Remover" 
+                                        />
+                                    </CartItemRemoveButton>
+                                </CartItem>
+                            ))}
+                        </CarrinhoContainer>
+                        <CartTotal>
+                            <CartTotalLabel>Valor total:</CartTotalLabel>
+                            <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
+                        </CartTotal>
+                        <CheckoutButton onClick={handleCheckout}>Continuar com a entrega</CheckoutButton>
+                    </Sidebar>
+                )}
+            </CartContainer>
+        </Overlay>
+    );
 };
 
 export default Cart;

@@ -35,7 +35,7 @@ export const CartLabel = styled.label`
    
 `
 
-export  const CartaoInfosPagment = styled.div`
+export const CartaoInfosPagment = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -49,7 +49,7 @@ export const InputNumber = styled.input`
   color: ${cores.cortextForms};
 `
 
-export  const InputCvv = styled.input`
+export const InputCvv = styled.input`
   width: 100px;
   height: 24px;
   padding-left: 8px;
@@ -75,7 +75,7 @@ export const InputYear = styled.input`
   width: 160px;
 
 `
-export const ConatinerFomsBtn  = styled.div`
+export const ConatinerFomsBtn = styled.div`
   dispalay: flex;
   flex-direction: column;
 
