@@ -15,6 +15,14 @@ import {
     CartItemRemoveButton, CartTotal, CartTotalLabel, CartTotalValue, CheckoutButton 
 } from './styles';
 
+// Função para formatar o valor em real
+const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    }).format(value);
+};
+
 const Cart = () => {
     const dispatch = useDispatch();
     const [showDeliveryForm, setShowDeliveryForm] = useState(false);
@@ -79,7 +87,7 @@ const Cart = () => {
                                     <CartItemImage src={item.image} alt={item.name} />
                                     <CartItemInfo>
                                         <CartItemName>{item.name}</CartItemName>
-                                        <CartItemPrice>R$ {item.price.toFixed(2)}</CartItemPrice>
+                                        <CartItemPrice>{formatCurrency(item.price)}</CartItemPrice>
                                     </CartItemInfo>
                                     <CartItemRemoveButton>
                                         <img 
@@ -93,7 +101,7 @@ const Cart = () => {
                         </CarrinhoContainer>
                         <CartTotal>
                             <CartTotalLabel>Valor total:</CartTotalLabel>
-                            <CartTotalValue>R$ {total.toFixed(2)}</CartTotalValue>
+                            <CartTotalValue>{formatCurrency(total)}</CartTotalValue>
                         </CartTotal>
                         <CheckoutButton onClick={handleCheckout}>Continuar com a entrega</CheckoutButton>
                     </Sidebar>
@@ -104,6 +112,13 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+
+
+
+
+
 
 
 
