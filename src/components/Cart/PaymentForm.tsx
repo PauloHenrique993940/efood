@@ -1,97 +1,109 @@
-import React, { useState } from "react";
-import { ButtaoVoltarAoEndereco, ButtonFinanlizar, CartaoInfosPagment, CartLabel, ConatinerFomsBtn, InputContainer, InputCvv, InputMonth, InputNumber, InputYear, PaymentContainer } from "./paymento";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import {
+  ButtaoVoltarAoEndereco,
+  ButtonFinanlizar,
+  CartaoInfosPagment,
+  CartLabel,
+  ConatinerFomsBtn,
+  InputContainer,
+  InputCvv,
+  InputMonth,
+  InputNumber,
+  InputYear,
+  PaymentContainer,
+} from "./paymento";
 
 interface PaymentFormProps {
   onCancel: () => void;
-  onPaymentSuccess: () => void; // Adicione esta linha
+  onPaymentSuccess: () => void;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ onCancel, onPaymentSuccess }) => {
-  const [cardNumber, setCardNumber] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [expiryMonth, setExpiryMonth] = useState("");
-  const [expiryYear, setExpiryYear] = useState("");
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log({ cardNumber, cvv, expiryMonth, expiryYear });
-    // Aqui você faria a lógica real de pagamento (ex: chamada de API)
-    // Se o pagamento for bem-sucedido, chame onPaymentSuccess
-    onPaymentSuccess();
-  };
+  const validationSchema = Yup.object({
+    cardName: Yup.string().required("Nome do cartão é obrigatório"),
+    cardNumber: Yup.string()
+      .matches(/^\d{16}$/, "Número do cartão inválido")
+      .required("Número do cartão é obrigatório"),
+    cvv: Yup.string()
+      .matches(/^\d{3,4}$/, "CVV inválido")
+      .required("CVV é obrigatório"),
+    expiryMonth: Yup.string()
+      .matches(/^(0[1-9]|1[0-2])$/, "Mês inválido")
+      .required("Mês de vencimento é obrigatório"),
+    expiryYear: Yup.string()
+      .matches(/^\d{4}$/, "Ano inválido")
+      .required("Ano de vencimento é obrigatório"),
+  });
 
   return (
     <PaymentContainer>
       <h2>Pagamento - Valor a pagar R$ 190,90</h2>
-      <form onSubmit={handleSubmit}>
-        <InputContainer>
-          <div>
-            <div>
-              <CartLabel>Nome do cartão:</CartLabel>
-              <input
-                type="text"
-                id="cardName"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-                required
-              />
-            </div>
+      <Formik
+        initialValues={{
+          cardName: "",
+          cardNumber: "",
+          cvv: "",
+          expiryMonth: "",
+          expiryYear: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          console.log(values);
+          onPaymentSuccess();
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <InputContainer>
+              <div>
+                <CartLabel>Nome do cartão:</CartLabel>
+                <Field type="text" id="cardName" name="cardName" />
+                <ErrorMessage name="cardName" component="div" />
+              </div>
+              <CartaoInfosPagment>
+                <div>
+                  <CartLabel>Numero do cartão:</CartLabel>
+                  <Field type="text" id="cardNumber" name="cardNumber" as={InputNumber} />
+                  <ErrorMessage name="cardNumber" component="div" />
+                </div>
+                <div>
+                  <CartLabel>CVV:</CartLabel>
+                  <Field type="text" id="cvv" name="cvv" as={InputCvv} />
+                  <ErrorMessage name="cvv" component="div" />
+                </div>
+              </CartaoInfosPagment>
+            </InputContainer>
             <CartaoInfosPagment>
               <div>
-                <CartLabel>Numero do cartão:</CartLabel>
-                <InputNumber
-                  id="cardNumber"
-                  value={cardNumber}
-                  onChange={(value) => setCardNumber(value?.toString() || "")}
-                />
+                <CartLabel htmlFor="expiryMonth">Mês de vencimento:</CartLabel>
+                <Field type="text" id="expiryMonth" name="expiryMonth" as={InputMonth} />
+                <ErrorMessage name="expiryMonth" component="div" />
               </div>
-              <div className="form-group">
-                <label htmlFor="cvv">CVV:</label>
-                <InputCvv
-                  type="text"
-                  id="cvv"
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value)}
-                  required
-                />
+              <div>
+                <CartLabel htmlFor="expiryYear">Ano de vencimento:</CartLabel>
+                <Field type="text" id="expiryYear" name="expiryYear" as={InputYear} />
+                <ErrorMessage name="expiryYear" component="div" />
               </div>
             </CartaoInfosPagment>
-          </div>
-        </InputContainer>
-        <CartaoInfosPagment>
-          <div>
-            <CartLabel htmlFor="expiryMonth">Mês de vencimento:</CartLabel>
-            <InputMonth
-              type="text"
-              id="expiryMonth"
-              value={expiryMonth}
-              onChange={(e) => setExpiryMonth(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <CartLabel htmlFor="expiryYear">Ano de vencimento:</CartLabel>
-            <InputYear
-              type="text"
-              id="expiryYear"
-              value={expiryYear}
-              onChange={(e) => setExpiryYear(e.target.value)}
-              required
-            />
-          </div>
-        </CartaoInfosPagment>
-        <ConatinerFomsBtn>
-          <ButtonFinanlizar type="submit">
-            Finalizar pagamento
-          </ButtonFinanlizar>
-          <ButtaoVoltarAoEndereco type="button" onClick={onCancel}>
-            Voltar para a edição de endereço
-          </ButtaoVoltarAoEndereco>
-        </ConatinerFomsBtn>
-      </form>
+            <ConatinerFomsBtn>
+              <ButtonFinanlizar type="submit" disabled={isSubmitting}>
+                Finalizar pagamento
+              </ButtonFinanlizar>
+              <ButtaoVoltarAoEndereco type="button" onClick={onCancel}>
+                Voltar para a edição de endereço
+              </ButtaoVoltarAoEndereco>
+            </ConatinerFomsBtn>
+          </Form>
+        )}
+      </Formik>
     </PaymentContainer>
   );
 };
 
 export default PaymentForm;
+
+
+
 

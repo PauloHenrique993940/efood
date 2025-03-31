@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { cores } from "../../styles";
+import { Field } from "formik";
 
 export const  CartForms = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ export const FormGroup = styled.div`
 
 `
 
-export const FormInput = styled.input`
+export const FormInput = styled(Field)`
   margin-top: 10px;
   margin-bottom: 5px;
   border: none;
@@ -47,12 +48,13 @@ export const Label = styled.label`
   margin-bottom: 5px;
 `;
 
-export const Input = styled.input`
+export const Input = styled(Field)`
   width: 100%;
   box-sizing: border-box;
   border: none;
   background-color: ${cores.branca};
   height: 24px;
+  color: black;
 `;
 
 

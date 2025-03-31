@@ -143,8 +143,7 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
             </FormGroup>
             <ButtonContinuar
               style={{
-                backgroundColor: '#FFFFFF', // Cor de fundo verde
-                color: '#E66767', // Cor do texto branca
+                backgroundColor: '#FFFFFF', // Cor de fundo verd
                 padding: '10px', // Espaçamento interno
                 border: 'none', // Sem borda
                 cursor: 'pointer', // Cursor em forma de mão
@@ -187,3 +186,4 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
 }
 
 export default DeliveryForm
+
