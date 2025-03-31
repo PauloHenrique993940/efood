@@ -15,7 +15,6 @@ import {
     CartItemRemoveButton, CartTotal, CartTotalLabel, CartTotalValue, CheckoutButton 
 } from './styles';
 
-// Função para formatar o valor em real
 const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('pt-BR', {
         style: 'currency',

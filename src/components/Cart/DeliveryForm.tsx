@@ -1,127 +1,189 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PaymentForm from "./PaymentForm";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import PaymentForm from './PaymentForm'
+import Button from '../Button'
 import {
-    ButaoVoltar,
-    ButtonContinuar,
-    CartForms,
-    FormGroup,
-    FormGroupFlex,
-    FormInput,
-    Input,
-    Label,
-    LabelComplemento
-} from "./stylesForms";
-import Button from "../Button";
+  ButaoVoltar,
+  ButtonContinuar,
+  CartForms,
+  FormGroup,
+  FormGroupFlex,
+  FormInput,
+  Input,
+  Label,
+  LabelComplemento
+} from './stylesForms'
 
 interface DeliveryFormProps {
-    onCancel: () => void;
-    onDeliverySuccess: () => void; // Adicionando a prop onDeliverySuccess
+  onCancel: () => void
+  onDeliverySuccess: () => void
 }
 
-const DeliveryForm: React.FC<DeliveryFormProps> = ({ onCancel, onDeliverySuccess }) => {
-    const [name, setName] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [cep, setCep] = useState("");
-    const [number, setNumber] = useState("");
-    const [complement, setComplement] = useState("");
-    const [showPaymentForm, setShowPaymentForm] = useState(false);
-    const navigate = useNavigate();
+const DeliveryForm: React.FC<DeliveryFormProps> = ({
+  onCancel,
+  onDeliverySuccess
+}) => {
+  const [showPaymentForm, setShowPaymentForm] = useState(false)
+  const navigate = useNavigate()
 
-    const handlePaymentForm = () => {
-        onDeliverySuccess(); // Chame onDeliverySuccess aqui
-        setShowPaymentForm(true);
-    };
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Nome é obrigatório'),
+    address: Yup.string().required('Endereço é obrigatório'),
+    city: Yup.string().required('Cidade é obrigatória'),
+    cep: Yup.string()
+      .matches(/^\d{5}-\d{3}$/, 'CEP inválido')
+      .required('CEP é obrigatório'),
+    number: Yup.string().required('Número é obrigatório'),
+    complement: Yup.string().optional()
+  })
 
-    // Se showPaymentForm for true, renderiza o PaymentForm
-    if (showPaymentForm) {
-        return <PaymentForm onCancel={() => setShowPaymentForm(false)} onPaymentSuccess={() => {}} />;
-    }
+  const handlePaymentForm = () => {
+    onDeliverySuccess() // Chama onDeliverySuccess aqui
+    setShowPaymentForm(true)
+  }
 
+  if (showPaymentForm) {
     return (
-        <CartForms>
-            <h2>Entrega</h2>
+      <PaymentForm
+        onCancel={() => setShowPaymentForm(false)}
+        onPaymentSuccess={() => {}}
+      />
+    )
+  }
+
+  return (
+    <CartForms>
+      <h2>Entrega</h2>
+      <Formik
+        initialValues={{
+          name: '',
+          address: '',
+          city: '',
+          cep: '',
+          number: '',
+          complement: ''
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          console.log(values) // Aqui você pode lidar com os dados após a submissão
+          handlePaymentForm()
+        }}
+      >
+        {() => (
+          <Form>
             <FormGroup>
-                <label htmlFor="name">Quem irá receber:</label>
-                <FormInput
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
+              <label htmlFor="name">Quem irá receber:</label>
+              <Field
+                type="text"
+                id="name"
+                name="name"
+                as={FormInput}
+                required
+              />
+              <ErrorMessage name="name" component="div" />
             </FormGroup>
+
             <FormGroup>
-                <label htmlFor="address">Endereço:</label>
-                <FormInput
-                    type="text"
-                    id="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    required
-                />
+              <label htmlFor="address">Endereço:</label>
+              <Field
+                type="text"
+                id="address"
+                name="address"
+                as={FormInput}
+                required
+              />
+              <ErrorMessage name="address" component="div" />
             </FormGroup>
+
             <FormGroup>
-                <label htmlFor="city">Cidade:</label>
-                <FormInput
-                    type="text"
-                    id="city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                />
+              <label htmlFor="city">Cidade:</label>
+              <Field
+                type="text"
+                id="city"
+                name="city"
+                as={FormInput}
+                required
+              />
+              <ErrorMessage name="city" component="div" />
             </FormGroup>
+
             <FormGroupFlex>
-                <div>
-                    <Label htmlFor="cep">CEP:</Label>
-                    <Input
-                        type="text"
-                        id="cep"
-                        value={cep}
-                        onChange={(e) => setCep(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <Label htmlFor="number">Número:</Label>
-                    <Input
-                        type="text"
-                        id="number"
-                        value={number}
-                        onChange={(e) => setNumber(e.target.value)}
-                        required
-                    />
-                </div>
-            </FormGroupFlex>
-            <FormGroup>
-                <LabelComplemento htmlFor="complement">Complemento (opcional):</LabelComplemento>
-                <FormInput
-                    type="text"
-                    id="complement"
-                    value={complement}
-                    onChange={(e) => setComplement(e.target.value)}
+              <div>
+                <Label htmlFor="cep">CEP:</Label>
+                <Field type="text" id="cep" name="cep" as={Input} required />
+                <ErrorMessage name="cep" component="div" />
+              </div>
+
+              <div>
+                <Label htmlFor="number">Número:</Label>
+                <Field
+                  type="text"
+                  id="number"
+                  name="number"
+                  as={Input}
+                  required
                 />
+                <ErrorMessage name="number" component="div" />
+              </div>
+            </FormGroupFlex>
+
+            <FormGroup>
+              <LabelComplemento htmlFor="complement">
+                Complemento (opcional):
+              </LabelComplemento>
+              <Field
+                type="text"
+                id="complement"
+                name="complement"
+                as={FormInput}
+              />
+              <ErrorMessage name="complement" component="div" />
             </FormGroup>
-            <ButtonContinuar type="button" onClick={handlePaymentForm}>
-                Continuar com o pagamento
+            <ButtonContinuar
+              style={{
+                backgroundColor: '#FFFFFF', // Cor de fundo verde
+                color: '#E66767', // Cor do texto branca
+                padding: '10px', // Espaçamento interno
+                border: 'none', // Sem borda
+                cursor: 'pointer', // Cursor em forma de mão
+                fontSize: '16px', // Tamanho da fonte
+                transition: 'background-color 0.3s',
+                font: 'bold', // Transição suave para a cor de fundo
+                height: '30px',
+                width: '100%',
+                fontWeight: 'bold'
+              }}
+              type="submit"
+            >
+              Continuar com o pagamento
             </ButtonContinuar>
-            <ButaoVoltar type="button" onClick={onCancel}>
-                Voltar para o carrinho
+            <br />
+            <ButaoVoltar
+              style={{
+                backgroundColor: '#FFFFFF', // Cor de fundo vermelha
+                color: '#E¨¨&¨&', // Cor do texto branca
+                padding: '10px 20px', // Espaçamento interno
+                border: 'none', // Sem borda
+                borderRadius: 'none', // Bordas arredondadas
+                cursor: 'pointer', // Cursor em forma de mão
+                fontSize: '16px', // Tamanho da fonte
+                transition: 'background-color 0.3s', // Transição suave para a cor de fundo
+                height: '30px',
+                width: '100%',
+                fontWeight: 'bold'
+              }}
+              type="button"
+              onClick={onCancel}
+            >
+              Voltar para o carrinho
             </ButaoVoltar>
-        </CartForms>
-    );
-};
+          </Form>
+        )}
+      </Formik>
+    </CartForms>
+  )
+}
 
-export default DeliveryForm;
-
-
-
-
-
-
-
-
-
-
-
+export default DeliveryForm
