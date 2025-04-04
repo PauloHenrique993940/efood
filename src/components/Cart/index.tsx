@@ -115,7 +115,6 @@ const Cart = () => {
                             <CartTotalLabel>Valor total:</CartTotalLabel>
                             <CartTotalValue>{formatCurrency(total)}</CartTotalValue>
                         </CartTotal>
-                        // eslint-disable-next-line react/react-in-jsx-scope
                         <CheckoutButton onClick={handleCheckout}>Continuar com a entrega</CheckoutButton>
                     </Sidebar>
                 )}
