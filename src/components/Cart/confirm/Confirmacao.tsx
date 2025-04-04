@@ -5,14 +5,17 @@ import { Botao, Container, Texto, Titulo } from "./stylesConf";
 interface OrderData {
   trackingCode: string;
   deliveryDate: string;
+  totalAmount?: number; // Novo campo se a API retornar
 }
+
 
 interface ConfirmacaoProps {
   orderId: string;
   onClose: () => void;
+  total: number;
 }
 
-const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose }) => {
+const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose, total }) => {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +27,7 @@ const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        products: [{ id: 1, price: 0 }],
+        products: [{ id: 1, price: total }],
         delivery: {
           receiver: "Nome do destinatário",
           address: {
@@ -57,7 +60,7 @@ const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose }) => {
         setError(err.message);
         setLoading(false);
       });
-  }, [orderId]);
+  }, [orderId, total]);
 
   if (loading) return <Texto>Carregando...</Texto>;
   if (error) return <Texto>Erro ao carregar os dados: {error}</Texto>;
@@ -68,15 +71,13 @@ const Confirmacao: React.FC<ConfirmacaoProps> = ({ orderId, onClose }) => {
       <Texto>Seu pedido está sendo preparado para envio.</Texto>
       <Texto>Código de rastreamento: {orderData?.trackingCode}</Texto>
       <Texto>Data estimada de entrega: {orderData?.deliveryDate}</Texto>
-      <Texto>
-        Lembre-se da importância de registrar os dados após o recebimento do pedido.
-      </Texto>
+      <Texto>Valor total da compra: R$ {total.toFixed(2)}</Texto>
+      <Texto>Lembre-se da importância de registrar os dados após o recebimento do pedido.</Texto>
       <Botao onClick={onClose}>Concluir</Botao>
     </Container>
   );
 };
-
-export default Confirmacao;
+export default Confirmacao
 
 
 

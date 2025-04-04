@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import lixeira from "../../asstes/carrinho/lixeira.png";
 import DeliveryForm from "./DeliveryForm";
@@ -10,7 +10,7 @@ import { closeCart, removeItem } from "../../store/reducers/cart";
 // ... (restante do código) ...
 
 import { 
-    Overlay, CartContainer, Sidebar, CarrinhoContainer, CarriinhoText, 
+    Overlay, CartContainer, Sidebar, CarrinhoContainer, 
     CartItem, CartItemImage, CartItemInfo, CartItemName, CartItemPrice, 
     CartItemRemoveButton, CartTotal, CartTotalLabel, CartTotalValue, CheckoutButton 
 } from './styles';
@@ -27,7 +27,7 @@ const Cart = () => {
     const [showDeliveryForm, setShowDeliveryForm] = useState(false);
     const [showPaymentForm, setShowPaymentForm] = useState(false);
     const [showConfirmacao, setShowConfirmacao] = useState(false);
-    const [orderId, setOrderId] = useState("ORDER_12345"); // Adicione um estado para orderId
+    const [orderId] = useState("ORDER_12345"); // Adicione um estado para orderId
 
     const isOpen = useSelector((state: RootState) => state.cart.isOpen);
     const items = useSelector((state: RootState) => state.cart.items);
@@ -73,7 +73,8 @@ const Cart = () => {
             <CartContainer>
                 <button className="btnFechar" onClick={() => dispatch(closeCart())}>X</button>
                 {showConfirmacao ? (
-                    <Confirmacao onClose={handleConfirmacaoClose} orderId={orderId} /> // Adicione orderId aqui
+                    <Confirmacao onClose={handleConfirmacaoClose} orderId={orderId} total={total} />
+
                 ) : showPaymentForm ? (
                     <PaymentForm onPaymentSuccess={handlePaymentSuccess} onCancel={handlePaymentCancel} />
                 ) : showDeliveryForm ? (
