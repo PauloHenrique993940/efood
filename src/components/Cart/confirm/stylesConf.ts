@@ -1,13 +1,5 @@
-import React from "react";
 import styled from "styled-components";
 import { cores } from "../../../styles";
-
-interface ConfirmacaoProps {
-  orderId: string;
-  onClose: () => void;
-}
-
-
 
 // Componentes estilizados usando styled-components
 export const Container = styled.div`

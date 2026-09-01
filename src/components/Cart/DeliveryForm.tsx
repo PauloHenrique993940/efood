@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import PaymentForm from './PaymentForm';
-import Button from '../Button';
 import {
     ButaoVoltar,
     ButtonContinuar,
@@ -28,7 +26,6 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({
     total // Recebe o 'total' como prop
 }) => {
     const [showPaymentForm, setShowPaymentForm] = useState(false);
-    const navigate = useNavigate();
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Nome é obrigatório'),
