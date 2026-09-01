@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "titulo": "Bella Tavola Italiana",
+      "destacado": true,
+      "tipo": "italiana",
+      "avaliacao": 4.7,
+      "descricao": "A paixão dos nossos talentosos chefs pela cozinha italiana é evidente em cada prato...",
+      "capa": "https://fake-api-tau.vercel.app/efood/bella_tavola_italiana//capa.jpeg",
+      "cardapio": [
+        // ... (itens do cardápio)
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Casa das Delícias Árabes",
+      "destacado": false,
+      "tipo": "árabe",
+      "avaliacao": 4.8,
+      "descricao": "A Casa das Delícias Árabes é um acolhedor e autêntico restaurante árabe...",
+      "capa": "https://fake-api-tau.vercel.app/efood/casa_delicias_arabes//capa.jpeg",
+      "cardapio": [
+        // ... (itens do cardápio)
+      ]
+    },
+    // ... (outros restaurantes)
+  ]
