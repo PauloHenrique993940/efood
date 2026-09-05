@@ -39,6 +39,40 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Testes
+
+### Testes unitários (Jest + React Testing Library)
+
+O Jest já vem configurado pelo Create React App. Os testes ficam em arquivos
+`*.test.ts` / `*.test.tsx` próximos ao código (ex.: [src/store/reducers/cart.test.ts](src/store/reducers/cart.test.ts)).
+
+```bash
+# Modo watch (desenvolvimento)
+npm test
+
+# Execução única com relatório de cobertura (CI)
+npm run test:ci
+```
+
+### Testes E2E (Cypress)
+
+Os specs ficam em `cypress/e2e/` e a configuração em [cypress.config.ts](cypress.config.ts)
+(baseUrl: `http://localhost:3000`).
+
+```bash
+# 1. Suba a aplicação em um terminal
+npm start
+
+# 2. Em outro terminal, abra a interface do Cypress...
+npm run cypress:open
+
+# ...ou rode em modo headless (CI)
+npm run cypress:run
+
+# Atalho: sobe o servidor, espera e roda o Cypress automaticamente
+npm run e2e
+```
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
