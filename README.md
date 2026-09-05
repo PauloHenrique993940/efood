@@ -22,6 +22,7 @@ dados de entrega e pagamento.
 - [Estrutura do projeto](#-estrutura-do-projeto)
 - [Arquitetura e fluxo de dados](#-arquitetura-e-fluxo-de-dados)
 - [Rotas](#-rotas)
+- [API (Swagger/OpenAPI)](#-api-swaggeropenapi)
 - [Modelos de dados](#-modelos-de-dados)
 - [Qualidade de código](#-qualidade-de-código)
 - [Build e deploy](#-build-e-deploy)
@@ -209,7 +210,61 @@ O total é derivado com `reduce` sobre `items` (`price * quantity`) e formatado 
 
 ---
 
-## 📄 Modelos de dados
+## � API (Swagger/OpenAPI)
+
+O front-end consome a API REST externa:
+
+```
+Base URL: https://fake-api-tau.vercel.app/api/efood
+```
+
+### Endpoints
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `GET` | `/restaurantes` | Lista todos os restaurantes com cardápios |
+| `GET` | `/restaurantes/{id}` | Detalhes de um restaurante e seu cardápio |
+| `POST` | `/checkout` | Finaliza o pedido (produtos + entrega + pagamento) e retorna código de rastreamento |
+
+### Especificação OpenAPI
+
+A especificação completa (schemas, exemplos e validações) está em
+[docs/openapi.yaml](docs/openapi.yaml).
+
+### Visualizando com Swagger UI
+
+Uma página Swagger UI está disponível em [public/api-docs/index.html](public/api-docs/index.html).
+Como o dev server do CRA redireciona todas as rotas para o app (SPA fallback), use um
+servidor estático para visualizá-la:
+
+```bash
+# Opção 1: servir a pasta public diretamente
+npx serve public
+# abra http://localhost:3000/api-docs/ (ou a porta exibida no terminal)
+
+# Opção 2: após o build de produção
+npm run build
+npx serve -s build
+# abra http://localhost:3000/api-docs/
+```
+
+> **Em produção (Vercel/Netlify):** a página fica disponível automaticamente em
+> `https://seu-dominio/api-docs/`, pois faz parte do build estático.
+
+Também é possível visualizar a spec em qualquer editor OpenAPI:
+
+- [Swagger Editor online](https://editor.swagger.io/) — importe o arquivo `docs/openapi.yaml`
+- Extensão **OpenAPI (Swagger) Editor** do VS Code — preview interativo do YAML
+
+### Validando a especificação
+
+```bash
+npx @redocly/cli lint docs/openapi.yaml
+```
+
+---
+
+## �📄 Modelos de dados
 
 ```ts
 // Restaurante e cardápio (src/data/restaurants.ts)

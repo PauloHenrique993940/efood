@@ -1,0 +1,279 @@
+openapi: 3.0.3
+info:
+  title: eFood API
+  description: |
+    API REST consumida pela aplicação eFood (delivery de restaurantes).
+
+    Base URL: `https://fake-api-tau.vercel.app/api/efood`
+
+    A API fornece o catálogo de restaurantes com seus cardápios e o endpoint
+    de checkout para finalização de pedidos.
+  version: 1.0.0
+  contact:
+    name: Paulo Henrique
+    url: https://github.com/PauloHenrique993940/efood
+servers:
+  - url: https://fake-api-tau.vercel.app/api/efood
+    description: Produção
+# API pública — nenhum esquema de autenticação é exigido
+security: []
+tags:
+  - name: Restaurantes
+    description: Catálogo de restaurantes e cardápios
+  - name: Checkout
+    description: Finalização de pedidos
+paths:
+  /restaurantes:
+    get:
+      tags:
+        - Restaurantes
+      summary: Lista todos os restaurantes
+      description: Retorna a lista completa de restaurantes com seus cardápios.
+      operationId: listarRestaurantes
+      responses:
+        "200":
+          description: Lista de restaurantes retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Restaurante"
+              example:
+                - id: 1
+                  titulo: Hioki Sushi
+                  destacado: true
+                  tipo: Japonesa
+                  avaliacao: 4.9
+                  descricao: Especialidades japonesas preparadas com ingredientes frescos.
+                  capa: https://fake-api-tau.vercel.app/efood/hioki_sushi/capa.jpeg
+                  cardapio:
+                    - foto: https://fake-api-tau.vercel.app/efood/hioki_sushi/harumaki.jpeg
+                      preco: 12.9
+                      id: 1
+                      nome: Harumaki
+                      descricao: Rolinho crocante com recheio de legumes.
+                      porcao: 4 unidades
+  /restaurantes/{id}:
+    get:
+      tags:
+        - Restaurantes
+      summary: Busca um restaurante pelo ID
+      description: Retorna os dados de um restaurante específico, incluindo o cardápio completo.
+      operationId: buscarRestaurante
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do restaurante
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Restaurante encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Restaurante"
+        "404":
+          description: Restaurante não encontrado
+  /checkout:
+    post:
+      tags:
+        - Checkout
+      summary: Finaliza um pedido
+      description: |
+        Registra o pedido com os produtos, dados de entrega e pagamento.
+        Retorna o código de rastreamento e a data estimada de entrega.
+      operationId: finalizarPedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutRequest"
+            example:
+              products:
+                - id: 1
+                  price: 60.0
+              delivery:
+                receiver: Nome do destinatário
+                address:
+                  description: Rua Exemplo
+                  city: São Paulo
+                  zipCode: "00000-000"
+                  number: 123
+                  complement: Apto 101
+              payment:
+                card:
+                  name: NOME NO CARTAO
+                  number: "0000000000000000"
+                  code: 123
+                  expires:
+                    month: 12
+                    year: 2030
+      responses:
+        "200":
+          description: Pedido realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutResponse"
+              example:
+                trackingCode: TRACK-ABC123
+                deliveryDate: "2026-09-12"
+        "400":
+          description: Dados inválidos na requisição
+        "422":
+          description: Pagamento recusado ou dados do cartão inválidos
+components:
+  schemas:
+    Restaurante:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: Hioki Sushi
+        destacado:
+          type: boolean
+          example: true
+        tipo:
+          type: string
+          description: Tipo de cozinha (ex. Japonesa, Italiana, Árabe)
+          example: Japonesa
+        avaliacao:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+          example: 4.9
+        descricao:
+          type: string
+          example: Especialidades japonesas preparadas com ingredientes frescos.
+        capa:
+          type: string
+          format: uri
+          description: URL da imagem de capa do restaurante
+        cardapio:
+          type: array
+          items:
+            $ref: "#/components/schemas/ItemCardapio"
+    ItemCardapio:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: Harumaki
+        descricao:
+          type: string
+          example: Rolinho crocante com recheio de legumes.
+        porcao:
+          type: string
+          example: 4 unidades
+        preco:
+          type: number
+          format: float
+          example: 12.9
+        foto:
+          type: string
+          format: uri
+    Produto:
+      type: object
+      required:
+        - id
+        - price
+      properties:
+        id:
+          type: integer
+          example: 1
+        price:
+          type: number
+          format: float
+          example: 60.0
+    Endereco:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Rua Exemplo
+        city:
+          type: string
+          example: São Paulo
+        zipCode:
+          type: string
+          pattern: '^\d{5}-\d{3}$'
+          example: "00000-000"
+        number:
+          type: integer
+          example: 123
+        complement:
+          type: string
+          example: Apto 101
+    Cartao:
+      type: object
+      properties:
+        name:
+          type: string
+          example: NOME NO CARTAO
+        number:
+          type: string
+          pattern: '^\d{16}$'
+          example: "0000000000000000"
+        code:
+          type: integer
+          description: CVV (3 ou 4 dígitos)
+          example: 123
+        expires:
+          type: object
+          properties:
+            month:
+              type: integer
+              minimum: 1
+              maximum: 12
+              example: 12
+            year:
+              type: integer
+              example: 2030
+    CheckoutRequest:
+      type: object
+      required:
+        - products
+        - delivery
+        - payment
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Produto"
+        delivery:
+          type: object
+          properties:
+            receiver:
+              type: string
+              example: Nome do destinatário
+            address:
+              $ref: "#/components/schemas/Endereco"
+        payment:
+          type: object
+          properties:
+            card:
+              $ref: "#/components/schemas/Cartao"
+    CheckoutResponse:
+      type: object
+      properties:
+        trackingCode:
+          type: string
+          description: Código de rastreamento do pedido
+          example: TRACK-ABC123
+        deliveryDate:
+          type: string
+          format: date
+          description: Data estimada de entrega
+          example: "2026-09-12"
